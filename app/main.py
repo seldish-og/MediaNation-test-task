@@ -13,8 +13,8 @@ last_index = int(index.get_last_index())
 
 for url in urls[last_index:]:
     url_index = urls.index(url)
-    urls.pop(url_index)
-    urls.pop(url_index)
+    first_thread = urls.pop(url_index)
+    second_thread = urls.pop(url_index)
 
     index.update_index(2)
 
