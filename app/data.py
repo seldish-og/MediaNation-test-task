@@ -2,26 +2,40 @@ import csv
 import redis
 
 
-class Data:
+class File:
     def __init__(self) -> None:
-        pool = redis.ConnectionPool(host='localhost', port=16379, db=0)
-        self.redis = redis.Redis(connection_pool=pool)
+        pass
 
     def get_urls(self):
         urls = []
-        with open("files/urls/habr.csv") as csv_file:
+        with open("files/urls/test.csv") as csv_file:
             csv_rows = csv.reader(csv_file, delimiter=' ')
             for row in csv_rows:
                 urls.append(''.join(row))
         return urls
 
-    def write_result_file(self, url, creds, html):
-        pass
+    # на интервью было утчнено что сохранять именно в .html разрешении
+    def write_results(self, url, creds, html):
+        with open("files/results/{}.html".format(creds.replace(' ', '')), "w") as file:
+            result = "{}\n{}\n{}\n".format(url, creds, html)
+            file.write(result)
 
-    def set_new_index(self):
-        pass
 
-    def get_last_indexes(self):
-        index1 = self.redis.get("index1")
-        index2 = self.redis.get("index2")
-        return index1, index2
+class Index:
+    def __init__(self) -> None:
+        pool = redis.ConnectionPool(host='localhost', port=16379, db=0)
+        self.redis = redis.Redis(connection_pool=pool)
+
+    def update_index(self):
+        old_index = self.redis.get("last_index")
+        self.redis.set("last_index", old_index + 2)
+
+    def reset_redis(self):
+        self.redis.flushdb()
+
+    def get_last_index(self):
+        if not self.redis.get("last_index"):
+            self.redis.set("last_index", 1)
+
+        last_index = self.redis.get("last_index")
+        return last_index

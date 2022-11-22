@@ -19,11 +19,7 @@ class Parser:
 
         return creds.text
 
-    def get_creds(self, url):
+    def get_content(self, url):
         page_text = self.get_page_content(url)
-        return self.parse_html(page_text)
-
-
-p = Parser()
-
-print(p.get_creds("https://career.habr.com/komsomol"))
+        creds = self.parse_html(page_text)
+        return (creds, page_text)
