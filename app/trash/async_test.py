@@ -1,7 +1,21 @@
-import asyncio
-import aiohttp
-import csv
 import time
+import threading
+import requests
+from parser import Parser
+from data import File, Index
+
+
+parser = Parser()
+file = File()
+index = Index()
+
+
+def make_result(url):
+    try:
+        creds, html = parser.get_content(url=url)
+        file.write_results(url=url, creds=creds, html=html)
+    except requests.exceptions.InvalidURL as url_ex:
+        pass
 
 
 all_data = []

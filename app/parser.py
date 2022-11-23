@@ -32,7 +32,7 @@ class Parser:
         try:
             page_text = self.get_page_content(url)
             creds = self.parse_html(page_text)
+            return (creds, page_text)
         except Exception as ex:
-            print("Bad URl")
+            print(f"----- Bad URl: {url} -----")
             raise requests.exceptions.InvalidURL
-        return (creds, page_text)
