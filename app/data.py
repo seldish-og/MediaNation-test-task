@@ -26,9 +26,9 @@ class Index:
         pool = redis.ConnectionPool(host='localhost', port=16379, db=0)
         self.redis = redis.Redis(connection_pool=pool)
 
-    def update_index(self):
-        old_index = self.redis.get("last_index")
-        self.redis.set("last_index", old_index + 2)
+    def update_index(self, num):
+        old_index = int(self.redis.get("last_index"))
+        self.redis.set("last_index", old_index + num)
 
     def reset_redis(self):
         self.redis.flushdb()

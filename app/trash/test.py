@@ -1,13 +1,17 @@
-x = ["one", "two", "three", "four"]
+lst = ["one", "two", "three", "four", "five",
+       "six", "sevent", "eight", "nine", "ten"]
 
-for i in range(0, len(x) - 1, 2):
-    print(x[i])
-    print(x[i + 1])
+a_list = [1, 2, 3, 4, 5]
+
+# for i in x[1::2]:
+#     print(x[])
+#     print(x[i + 1])
 
 
-for i in range(last_index, urls, 2):
+# for url in urls[last_index:]:
+#     url_index=urls.index(url)
 
-    first_url = urls[i]
-    second_url = urls[i + 1]
-    make_threads(first_url, second_url)
-    index.update_index(2)
+#     first_url=urls.pop(url_index)
+#     second_url=urls.pop(url_index + 1)
+#     make_threads(first_url, second_url)
+#     index.update_index(2)

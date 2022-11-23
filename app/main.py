@@ -1,5 +1,6 @@
 import time
 import threading
+import requests
 from parser import Parser
 from data import File, Index
 
@@ -10,8 +11,11 @@ index = Index()
 
 
 def make_result(url):
-    creds, html = parser.get_content(url=url)
-    file.write_results(url=url, creds=creds, html=html)
+    try:
+        creds, html = parser.get_content(url=url)
+        file.write_results(url=url, creds=creds, html=html)
+    except requests.exceptions.InvalidURL as url_ex:
+        pass
 
 
 def make_threads(first_url, second_url):
@@ -26,29 +30,17 @@ def main():
     urls = file.get_urls()
     last_index = int(index.get_last_index())
 
-    for url in urls[last_index:]:
-        url_index = urls.index(url)
+    print(f"-----LAST INDEX IS: {last_index}-----")
 
-        first_url = urls.pop(url_index)
-        second_url = urls.pop(url_index + 1)
+    for i in range(last_index, len(urls) - 1, 2):
+        first_url = urls[i]
+        second_url = urls[i + 1]
+
+        print(first_url, second_url)
         make_threads(first_url, second_url)
         index.update_index(2)
 
     index.reset_redis()
-
-# results = parser.get_content(url)
-# data.write_results(url=url, creds=results[0], html=results[1])
-
-# def main():
-#     last_inex1, last_index2 = get_indexes()
-#     thread1 = threading.Thread(target=parse)
-#     thread2 = threading.Thread(target=parse)
-
-#     thread1.start()
-#     thread2.start()
-
-#     thread1.join()
-#     thread2.join()
 
 
 if __name__ == "__main__":
